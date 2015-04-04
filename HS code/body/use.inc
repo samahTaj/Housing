@@ -49,6 +49,7 @@
 									{
 									$result=$mysqli->query("select * from user where id=$val");
 									 $result1 =  $mysqli->query("SELECT * FROM user_has_role where user_id=$val");
+									  $result2 =  $mysqli->query("SELECT * FROM role ");
 								      $num_results = $result->num_rows;
 									 
                                      
@@ -64,7 +65,11 @@
 									echo "<td><input type=\"text\" class=\"form-control\"  id=\"state[]\" name=\"state[]\"   value=";echo $row['state']." \" ></td>";
 									echo "<td><input type=\"text\" class=\"form-control\"  id=\"residential_area[]\" name=\"residential_area[]\"  value=\"";echo $row['residential_area']." \" ></td>";
 									echo "<td><input type=\"text\" class=\"form-control\"  id=\"phone[]\" name=\"phone[]\"  value=\"";echo $row['phone']." \"></td>";
-									echo "<td><input type=\"text\" class=\"form-control\"  id=\"role[]\" name=\"role[]\"  value=\"";echo $row1['role_role_id']." \"></td>";
+									echo "<td><select class=\"form-control\">";
+									while( $row2 = mysqli_fetch_assoc($result2))
+									echo "<option>".$row2['role_name']."</option>";
+									
+									echo "</select></td>";
 									echo "</tr></div>";
                       				
 									
