@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2015 at 02:41 PM
+-- Generation Time: Apr 08, 2015 at 11:39 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -101,14 +101,18 @@ INSERT INTO `permission` (`permission_id`, `permission_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `request` (
+  `request_id` int(11) NOT NULL,
   `type` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
+  `text` varchar(45) DEFAULT NULL,
   `date` date NOT NULL,
+  `room_capacity` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `user_fines_penalties_fp_id` int(11) DEFAULT NULL,
-  `building_b_id` int(11) NOT NULL,
-  KEY `fk_request_user1_idx` (`user_id`,`user_fines_penalties_fp_id`),
-  KEY `fk_request_building1_idx` (`building_b_id`)
+  `building_name` varchar(45) DEFAULT NULL,
+  `building_b_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`request_id`),
+  KEY `user_id` (`user_id`),
+  KEY `building_b_id` (`building_b_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -121,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(45) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `role`
@@ -214,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `middle_name`, `last_name`, `city`, `state`, `residential_area`, `phone`, `fines_penalties_fp_id`, `building_b_id`, `student_profile_national_id`, `pass`) VALUES
 (3113714, 'Samah', 'Taj', 'Shaat', 'aqaba', 'aqaba', '            ', '            ', NULL, NULL, NULL, '123'),
-(3113760, 'Sokaina', 'Mousa', 'Alhtibat', 'aqaba', 'aqaba', '           ', '           ', NULL, NULL, NULL, '456');
+(3113760, 'Sokaina', 'Mousa', 'Alhtibat', 'aqaba', 'aqaba', '            ', '            ', NULL, NULL, NULL, '456');
 
 -- --------------------------------------------------------
 
@@ -246,8 +250,8 @@ INSERT INTO `user_has_role` (`user_id`, `role_role_id`) VALUES
 -- Constraints for table `request`
 --
 ALTER TABLE `request`
-  ADD CONSTRAINT `fk_request_building1` FOREIGN KEY (`building_b_id`) REFERENCES `mydb`.`building` (`b_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_request_user1` FOREIGN KEY (`user_id`, `user_fines_penalties_fp_id`) REFERENCES `mydb`.`user` (`id`, `fines_penalties_fp_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`building_b_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `role_has_permission`
